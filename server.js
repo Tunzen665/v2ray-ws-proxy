@@ -2,7 +2,7 @@ const http = require('http');
 const WebSocket = require('ws');
 
 const PORT = process.env.PORT || 8080;
-const TARGET = 'ws://YOUR.V2RAY.SERVER.IP:PORT'; // Change this
+const TARGET = 'ws://3.1.83.100:80'; // Your backend V2Ray server
 
 const server = http.createServer();
 
@@ -16,11 +16,11 @@ wss.on('connection', function connection(wsClient, req) {
   });
 
   wsClient.on('message', (message) => {
-    proxy.readyState === WebSocket.OPEN && proxy.send(message);
+    if (proxy.readyState === WebSocket.OPEN) proxy.send(message);
   });
 
   proxy.on('message', (message) => {
-    wsClient.readyState === WebSocket.OPEN && wsClient.send(message);
+    if (wsClient.readyState === WebSocket.OPEN) wsClient.send(message);
   });
 
   proxy.on('close', () => wsClient.close());
@@ -31,5 +31,5 @@ wss.on('connection', function connection(wsClient, req) {
 });
 
 server.listen(PORT, () => {
-  console.log(`WebSocket proxy running on port ${PORT}`);
+  console.log(`WebSocket proxy listening on port ${PORT}`);
 });
