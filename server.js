@@ -2,9 +2,12 @@ const http = require('http');
 const WebSocket = require('ws');
 
 const PORT = process.env.PORT || 8080;
-const TARGET = 'ws://3.1.83.100:80'; // Your backend V2Ray server
+const TARGET = 'ws://3.1.83.100:80';
 
-const server = http.createServer();
+const server = http.createServer((req, res) => {
+  res.writeHead(200);
+  res.end("WebSocket proxy is running.\n");
+});
 
 const wss = new WebSocket.Server({ server });
 
